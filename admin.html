@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeachClub Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #6e8efb;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            padding-bottom: 80px; /* Ana sayfa butonu için alan */
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .filters {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .category-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            background: white;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .category-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .item-category {
+            font-size: 0.8rem;
+            color: #666;
+            background: #f0f0f0;
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+        }
+
+        .item-stock {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stock-input {
+            width: 100px;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .update-btn {
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .update-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .stock-warning {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #ff6b6b;
+        }
+
+        .back-to-home {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            z-index: 1000;
+        }
+
+        .back-to-home:hover {
+            transform: translateX(-50%) translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem auto;
+            }
+
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .category-filters {
+                justify-content: center;
+            }
+
+            .category-btn {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin Panel</h1>
+    </header>
+
+    <div class="container">
+        <div class="filters">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Ürün ara..." oninput="filterItems()">
+            </div>
+            <div class="category-filters">
+                <button class="category-btn active" data-section="all">Tümü</button>
+                <button class="category-btn" data-section="drinks" data-category="cocktails">Kokteyller</button>
+                <button class="category-btn" data-section="drinks" data-category="beers">Biralar</button>
+                <button class="category-btn" data-section="drinks" data-category="wines">Şaraplar</button>
+                <button class="category-btn" data-section="drinks" data-category="spirits">Alkollü İçecekler</button>
+                <button class="category-btn" data-section="drinks" data-category="nonalcoholic">Alkolsüz İçecekler</button>
+                <button class="category-btn" data-section="foods" data-category="starters">Başlangıçlar</button>
+                <button class="category-btn" data-section="foods" data-category="pizzas">Pizzalar</button>
+                <button class="category-btn" data-section="foods" data-category="burgers">Burgerler</button>
+                <button class="category-btn" data-section="foods" data-category="wraps">Wraplar</button>
+                <button class="category-btn" data-section="foods" data-category="pastas">Makarnalar</button>
+                <button class="category-btn" data-section="foods" data-category="mains">Ana Yemekler</button>
+                <button class="category-btn" data-section="foods" data-category="salads">Salatalar</button>
+                <button class="category-btn" data-section="foods" data-category="toasts">Tostlar</button>
+                <button class="category-btn" data-section="foods" data-category="desserts">Tatlılar</button>
+            </div>
+        </div>
+
+        <div class="items-grid" id="itemsGrid">
+            <!-- Ürünler JavaScript ile buraya eklenecek -->
+        </div>
+    </div>
+
+    <a href="index.html" class="back-to-home">← Ana Sayfa</a>
+
+    <script src="script.js"></script>
+    <script>
+        let currentSection = 'all';
+        let currentCategory = null;
+
+        // Sayfa yüklendiğinde ürünleri göster
+        document.addEventListener('DOMContentLoaded', () => {
+            loadItems();
+            setupCategoryButtons();
+        });
+
+        function setupCategoryButtons() {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    // Aktif butonu güncelle
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    // Seçilen kategoriyi kaydet
+                    currentSection = e.target.dataset.section;
+                    currentCategory = e.target.dataset.category;
+
+                    // Ürünleri filtrele
+                    loadItems();
+                });
+            });
+        }
+
+        function loadItems() {
+            const itemsGrid = document.getElementById('itemsGrid');
+            itemsGrid.innerHTML = '';
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+
+            // Tüm kategorileri dolaş
+            Object.entries(menuData).forEach(([section, categories]) => {
+                Object.entries(categories).forEach(([category, items]) => {
+                    // Kategori filtresini uygula
+                    if (currentSection === 'all' || 
+                        (currentSection === section && currentCategory === category)) {
+                        
+                        items.forEach(item => {
+                            // Arama filtresini uygula
+                            if (item.name.toLowerCase().includes(searchText) || 
+                                category.toLowerCase().includes(searchText)) {
+                                const itemElement = createItemElement(item, section, category);
+                                itemsGrid.appendChild(itemElement);
+                            }
+                        });
+                    }
+                });
+            });
+        }
+
+        function createItemElement(item, section, category) {
+            const div = document.createElement('div');
+            div.className = 'item-card';
+            
+            const LOW_STOCK_THRESHOLD = 10;
+            const stockWarning = item.stock <= LOW_STOCK_THRESHOLD
+                ? '<div class="stock-warning">Stok kritik seviyede!</div>' 
+                : '';
+
+            div.innerHTML = `
+                <div class="item-header">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-category">${category}</div>
+                </div>
+                <div class="item-stock">
+                    <input type="number" class="stock-input" value="${item.stock}" min="0" id="stock-${item.id}">
+                    <button class="update-btn" onclick="updateStock('${item.id}', '${section}', '${category}')">
+                        Güncelle
+                    </button>
+                </div>
+                ${stockWarning}
+            `;
+            return div;
+        }
+
+        function updateStock(itemId, section, category) {
+            const stockInput = document.getElementById(`stock-${itemId}`);
+            const newStock = parseInt(stockInput.value);
+            
+            if (isNaN(newStock) || newStock < 0) {
+                alert('Lütfen geçerli bir stok miktarı girin!');
+                return;
+            }
+
+            // Menü verisini güncelle
+            const item = menuData[section][category].find(item => item.id === itemId);
+            if (item) {
+                item.stock = newStock;
+                loadItems(); // Listeyi yenile
+                alert('Stok başarıyla güncellendi!');
+            }
+        }
+
+        function filterItems() {
+            loadItems(); // Arama ve kategori filtrelerini uygula
+        }
+    </script>
+</body>
+</html> 

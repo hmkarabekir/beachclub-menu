@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeachClub - Öneri Sistemi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #6e8efb;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --transition-duration: 0.5s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .suggestion-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h2 {
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 0.5s ease forwards;
+        }
+
+        .suggestion-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideInRight 0.5s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .suggestion-option {
+            padding: 1.5rem;
+            border: none;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            font-weight: 500;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .suggestion-option span {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .suggestion-option:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .suggestion-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .suggestion-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .suggestion-item:nth-child(1) { animation-delay: 0.2s; }
+        .suggestion-item:nth-child(2) { animation-delay: 0.4s; }
+        .suggestion-item:nth-child(3) { animation-delay: 0.6s; }
+
+        .suggestion-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .suggestion-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .suggestion-item h3 {
+            padding: 1rem;
+            color: var(--text-color);
+            font-size: 1.2rem;
+        }
+
+        .suggestion-item p {
+            padding: 0 1rem 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .suggestion-item .price {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0 1rem 1rem;
+        }
+
+        .start-over {
+            display: block;
+            margin: 2rem auto 0;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            font-size: 1rem;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        .start-over:hover {
+            transform: scale(1.05);
+        }
+
+        .back-to-menu {
+            display: block;
+            margin: 2rem auto;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .back-to-menu:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutLeft {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-out {
+            animation: slideOutLeft 0.5s ease forwards;
+        }
+
+        .slide-in {
+            animation: slideInRight 0.5s ease forwards;
+        }
+
+        @media (max-width: 768px) {
+            .suggestion-container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+
+            .suggestion-options {
+                grid-template-columns: 1fr;
+            }
+
+            .suggestion-option {
+                padding: 1.2rem;
+                font-size: 1.1rem;
+            }
+
+            .suggestion-results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="suggestion-container">
+        <!-- İçerik JavaScript ile doldurulacak -->
+    </div>
+
+    <a href="menu.html" class="back-to-menu">← Menüye Dön</a>
+
+    <script src="script.js"></script>
+    <script>
+        // Sayfa yüklendiğinde öneri sistemini başlat
+        document.addEventListener('DOMContentLoaded', () => {
+            createSuggestionPage();
+        });
+    </script>
+</body>
+</html> 

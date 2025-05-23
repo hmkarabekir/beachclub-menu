@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeachClub Menü</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            padding-bottom: 80px; /* Ana sayfa butonu için alan */
+        }
+        
+        .back-to-home {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .back-to-home:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Öneri kutusu için ek stiller */
+        .suggestion-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+
+        .suggestion-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BeachClub Menü</h1>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="drinks">İçecekler</button>
+            <button class="tab-btn" data-tab="foods">Yiyecekler</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="drinks" class="menu-section active">
+            <div class="category-buttons drink-categories">
+                <button class="category-btn active" data-category="all">Tümü</button>
+                <button class="category-btn" data-category="cocktails">Kokteyller</button>
+                <button class="category-btn" data-category="beers">Biralar</button>
+                <button class="category-btn" data-category="wines">Şaraplar</button>
+                <button class="category-btn" data-category="spirits">Yüksek Alkollü İçecekler</button>
+                <button class="category-btn" data-category="nonalcoholic">Alkolsüz İçecekler</button>
+            </div>
+            <div class="menu-items">
+                <!-- İçecekler buraya dinamik olarak eklenecek -->
+            </div>
+        </section>
+
+        <section id="foods" class="menu-section">
+            <div class="category-buttons food-categories">
+                <button class="category-btn active" data-category="starters">Başlangıçlar</button>
+                <button class="category-btn" data-category="pizzas">Pizzalar</button>
+                <button class="category-btn" data-category="burgers">Burgerler</button>
+                <button class="category-btn" data-category="wraps">Wraplar</button>
+                <button class="category-btn" data-category="pastas">Makarnalar</button>
+                <button class="category-btn" data-category="mains">Ana Yemekler</button>
+                <button class="category-btn" data-category="salads">Salatalar</button>
+                <button class="category-btn" data-category="toasts">Tostlar</button>
+                <button class="category-btn" data-category="desserts">Tatlılar</button>
+            </div>
+            <div class="menu-items">
+                <!-- Yiyecekler buraya dinamik olarak eklenecek -->
+            </div>
+        </section>
+    </main>
+
+    <div id="suggestion-box" class="suggestion-box">
+        <button class="close-suggestion">×</button>
+        <h3>Bana bir şey öner</h3>
+        <a href="suggestion.html" class="suggestion-btn">
+            Öneri Al
+        </a>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title"></h2>
+            <img id="modal-image" src="" alt="">
+            <p id="modal-description"></p>
+            <p id="modal-price" class="price"></p>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-to-home">← Ana Sayfa</a>
+
+    <script src="script.js"></script>
+</body>
+</html> 
