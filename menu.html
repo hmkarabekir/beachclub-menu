@@ -7,26 +7,40 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            padding-bottom: 80px; /* Ana sayfa butonu için alan */
+        main {
+            margin-bottom: 2rem;
         }
         
-        .back-to-home {
-            display: block;
-            width: fit-content;
-            margin: 2rem auto;
-            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
-            color: white;
-            text-decoration: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s;
+        .menu-footer {
+            padding: 2rem 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            margin-top: 2rem;
         }
 
-        .back-to-home:hover {
+        .back-home {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .back-home:hover {
             transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .back-home {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
         }
 
         /* Öneri kutusu için ek stiller */
@@ -107,10 +121,9 @@
         </div>
     </div>
 
-    <div class="menu-header">
+    <footer class="menu-footer">
         <a href="./index.html" class="back-home">← Ana Sayfa</a>
-        <a href="./suggestion.html" class="suggestion-btn">🎯 Size Özel Öneriler</a>
-    </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>

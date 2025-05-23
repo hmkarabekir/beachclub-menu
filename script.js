@@ -266,6 +266,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.category-btn').forEach(btn => {
             btn.addEventListener('click', switchCategory);
         });
+
+        // Öneri kutusu kapatma
+        const closeSuggestionBtn = document.querySelector('.close-suggestion');
+        const suggestionBox = document.querySelector('.suggestion-box');
+        if (closeSuggestionBtn && suggestionBox) {
+            closeSuggestionBtn.addEventListener('click', () => {
+                suggestionBox.style.display = 'none';
+            });
+        }
     } else if (currentPath.includes('suggestion.html') || currentPath.endsWith('suggestion')) {
         createSuggestionPage();
     } else if (currentPath.includes('admin.html') || currentPath.endsWith('admin')) {
@@ -349,7 +358,7 @@ const SUGGESTION_QUESTIONS = {
             id: 'drink_type',
             question: 'Ne tarz bir içecekten hoşlanırsın?',
             options: [
-                { id: 'alcoholic', text: '🍷 Alkollü, şöyle keyifli bir şey', tags: ['cocktails', 'wines', 'spirits'] },
+                { id: 'alcoholic', text: '�� Alkollü, şöyle keyifli bir şey', tags: ['cocktails', 'wines', 'spirits'] },
                 { id: 'mocktail', text: '🍹 Renkli ama alkolsüz', tags: ['nonalcoholic'] },
                 { id: 'cold', text: '🧊 Ferahlatıcı soğuk içecekler', tags: ['cold'] },
                 { id: 'fizzy', text: '🫧 Köpüklü, gazlı bir şey', tags: ['beers', 'nonalcoholic'] }
@@ -420,7 +429,17 @@ function createSuggestionPage() {
     let currentFlow = 'initial';
     let currentQuestion = SUGGESTION_QUESTIONS.initial;
     const container = document.querySelector('.suggestion-container');
-    
+
+    // Çarpı butonunu dinle
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('close-suggestion')) {
+            const suggestionBox = e.target.closest('.suggestion-box');
+            if (suggestionBox) {
+                suggestionBox.style.display = 'none';
+            }
+        }
+    });
+
     async function showQuestion(questionData) {
         // Eğer mevcut içerik varsa, önce onu sola kaydırarak çıkar
         if (container.children.length > 0) {
