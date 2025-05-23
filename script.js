@@ -246,22 +246,48 @@ function openModal(item, type, category) {
     }
 }
 
-// Event Listeners
+// Sayfa yüklendiğinde çalışacak fonksiyonlar
 document.addEventListener('DOMContentLoaded', () => {
-    // İçecekler için tümünü, yiyecekler için varsayılan kategoriyi göster
-    createMenuItems('drinks', 'all');
-    createMenuItems('foods', 'starters');
+    // URL kontrolü ve yönlendirme
+    const currentPath = window.location.pathname;
+    const baseUrl = currentPath.endsWith('beachclub-menu/') ? '/beachclub-menu/' : '/';
     
-    // Sekme değiştirme
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', switchTab);
-    });
-    
-    // Kategori değiştirme
-    document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.addEventListener('click', switchCategory);
-    });
-    
+    // Sayfaya göre ilgili fonksiyonu çalıştır
+    if (currentPath.includes('menu.html') || currentPath.endsWith('menu')) {
+        createMenuItems('drinks', 'all');
+        createMenuItems('foods', 'starters');
+        
+        // Sekme değiştirme
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', switchTab);
+        });
+        
+        // Kategori değiştirme
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', switchCategory);
+        });
+    } else if (currentPath.includes('suggestion.html') || currentPath.endsWith('suggestion')) {
+        createSuggestionPage();
+    } else if (currentPath.includes('admin.html') || currentPath.endsWith('admin')) {
+        // Admin paneli başlangıç durumu
+        document.getElementById('adminPanel').style.display = 'none';
+        loadAdminItems();
+    }
+
+    // Modal olayları
+    const modal = document.getElementById('modal');
+    if (modal) {
+        document.querySelector('.close-modal').addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+
     // Menü öğesi tıklama
     document.querySelectorAll('.menu-section').forEach(section => {
         section.addEventListener('click', (e) => {
@@ -275,30 +301,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
-    // Modal kapatma
-    document.querySelector('.close-modal').addEventListener('click', () => {
-        document.getElementById('modal').style.display = 'none';
-    });
-    
-    window.addEventListener('click', (e) => {
-        const modal = document.getElementById('modal');
-        if (e.target === modal) {
+
+    // Escape tuşu ile modal kapatma
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal) {
             modal.style.display = 'none';
         }
     });
-    
-    // Öneri kutusu kapatma
-    document.querySelector('.close-suggestion').addEventListener('click', () => {
-        document.getElementById('suggestion-box').style.display = 'none';
-    });
-});
-
-// Escape tuşu ile modal ve öneri kutusunu kapatma
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        document.getElementById('modal').style.display = 'none';
-    }
 });
 
 // Öneri sistemi için soru setleri
