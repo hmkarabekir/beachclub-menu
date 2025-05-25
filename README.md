@@ -20,18 +20,6 @@ Modern ve interaktif bir plaj kulübü menü sistemi. Kişiselleştirilmiş yeme
 - CSS Grid & Flexbox
 - CSS Animations
 
-## Kurulum
-
-1. Repository'yi klonlayın:
-```bash
-git clone https://github.com/[kullanıcı-adınız]/beachclub-menu.git
-```
-
-2. İndex.html dosyasını bir web tarayıcısında açın.
-
-## Canlı Demo
-
-https://[kullanıcı-adınız].github.io/beachclub-menu/
 
 ## Lisans
 
